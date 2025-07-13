@@ -1,0 +1,4 @@
+name: MagicStuff
+version: '${project.version}'
+main: fr.loanspac.magicstuff.MagicStuff
+api-version: '1.20'
