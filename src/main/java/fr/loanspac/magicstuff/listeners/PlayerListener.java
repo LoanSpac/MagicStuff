@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 
@@ -24,9 +26,13 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onAction(PlayerInteractEvent event) {
-        for (MagicSword magicSword: this.plugin.getMagicSwords()) {
-            if (event.getAction().isRightClick() && Objects.equals(event.getItem(), magicSword.getItem())) {
-                magicSword.skill.executor(event.getPlayer());
+        if (event.getItem() == null) return;
+        PersistentDataContainer container = event.getItem().getItemMeta().getPersistentDataContainer();
+        if (container.has(this.plugin.getSwordKey(), PersistentDataType.STRING)) {
+            for (MagicSword magicSword: this.plugin.getMagicSwords()) {
+                if (event.getAction().isRightClick() && Objects.equals(event.getItem(), magicSword.getItem())) {
+                    magicSword.skill.executor(event.getPlayer());
+                }
             }
         }
     }

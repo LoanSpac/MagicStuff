@@ -5,6 +5,7 @@ import fr.loanspac.magicstuff.listeners.PlayerListener;
 import fr.loanspac.magicstuff.sword.MagicSword;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -13,13 +14,14 @@ import java.util.List;
 @Getter
 public final class MagicStuff extends JavaPlugin {
     private final List<MagicSword> magicSwords = new ArrayList<>();
+    private final NamespacedKey swordKey = new NamespacedKey(this, "magic-sword");
 
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
 
         // Load Stuff
-        registerMagicSword(new DashSword());
+        registerMagicSword(new DashSword(this.swordKey));
     }
 
     @Override
