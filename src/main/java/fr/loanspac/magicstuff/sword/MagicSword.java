@@ -10,7 +10,7 @@ public abstract class MagicSword {
     private final ItemStack item;
     public final Skill skill;
 
-    public MagicSword(String name, ItemStack item, Skill skill) {
+    protected MagicSword(String name, ItemStack item, Skill skill) {
         this.name = name;
         this.item = item;
         this.skill = skill;

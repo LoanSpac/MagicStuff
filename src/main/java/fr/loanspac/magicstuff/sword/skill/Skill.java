@@ -8,7 +8,7 @@ public abstract class Skill {
     private final String name;
     public abstract void executor(Player player);
 
-    public Skill(String name) {
+    protected Skill(String name) {
         this.name = name;
     }
 }
