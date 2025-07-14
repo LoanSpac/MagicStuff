@@ -25,7 +25,11 @@ public class MagicCommand implements CommandExecutor {
         for (MagicSword magicSword: this.plugin.getMagicSwords()) {
             if (magicSword.getName().equals(args[1])) {
                 player.getInventory().addItem(magicSword.getItem());
-                sender.sendMessage("§aYou obtain the Magic Sword §7[" + magicSword.getItem().getItemMeta().getItemName() + "§7]");
+                String itemName = magicSword.getItem().getItemMeta().getItemName();
+                if (itemName.isEmpty()) {
+                    itemName = magicSword.getItem().getType().name();
+                }
+                sender.sendMessage("§aYou obtain the Magic Sword §7[" + itemName + "§7]");
                 return true;
             }
         }
