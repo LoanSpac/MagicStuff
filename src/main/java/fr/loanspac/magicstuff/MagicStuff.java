@@ -1,7 +1,7 @@
 package fr.loanspac.magicstuff;
 
 import fr.loanspac.magicstuff.commands.MagicCommand;
-import fr.loanspac.magicstuff.dash.DashSword;
+import fr.loanspac.magicstuff.example.sword.DashSword;
 import fr.loanspac.magicstuff.listeners.PlayerListener;
 import fr.loanspac.magicstuff.sword.MagicSword;
 import lombok.Getter;

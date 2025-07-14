@@ -1,6 +1,6 @@
 package fr.loanspac.magicstuff.sword;
 
-import fr.loanspac.magicstuff.sword.skill.Skill;
+import fr.loanspac.magicstuff.skill.Skill;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 

@@ -1,6 +1,6 @@
-package fr.loanspac.magicstuff.dash.skill;
+package fr.loanspac.magicstuff.example.skill;
 
-import fr.loanspac.magicstuff.sword.skill.Skill;
+import fr.loanspac.magicstuff.skill.Skill;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;

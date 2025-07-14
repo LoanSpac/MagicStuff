@@ -1,6 +1,6 @@
-package fr.loanspac.magicstuff.dash;
+package fr.loanspac.magicstuff.example.sword;
 
-import fr.loanspac.magicstuff.dash.skill.DashSkill;
+import fr.loanspac.magicstuff.example.skill.DashSkill;
 import fr.loanspac.magicstuff.sword.MagicSword;
 import fr.loanspac.magicstuff.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
