@@ -9,6 +9,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        event.getPlayer().getInventory().addItem(new DashSword().buildItem());
+        event.getPlayer().getInventory().addItem(new DashSword().getItem());
     }
 }
