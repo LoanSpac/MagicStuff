@@ -20,11 +20,15 @@ public final class MagicStuff extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new PlayerListener(this), this);
         Objects.requireNonNull(getCommand("magic")).setExecutor(new MagicCommand(this));
 
         // Load Stuff
-        registerMagicSword(new DashSword(this.swordKey));
+        boolean example = this.getConfig().getBoolean("example-stuff");
+        if (example) {
+            registerMagicSword(new DashSword(this.swordKey));
+        }
     }
 
     @Override
