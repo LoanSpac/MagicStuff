@@ -6,12 +6,14 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -102,6 +104,26 @@ public class ItemBuilder {
 
     public ItemBuilder armorColor(Color color) {
         this.item.editMeta(LeatherArmorMeta.class, armorMeta -> armorMeta.setColor(color));
+        return this;
+    }
+
+    public ItemBuilder addData(NamespacedKey key, boolean persistentData) {
+        this.item.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, persistentData));
+        return this;
+    }
+
+    public ItemBuilder addData(NamespacedKey key, int persistentData) {
+        this.item.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, persistentData));
+        return this;
+    }
+
+    public ItemBuilder addData(NamespacedKey key, float persistentData) {
+        this.item.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.FLOAT, persistentData));
+        return this;
+    }
+
+    public ItemBuilder addData(NamespacedKey key, String persistentData) {
+        this.item.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, persistentData));
         return this;
     }
 
