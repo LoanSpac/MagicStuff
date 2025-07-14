@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
@@ -124,6 +126,27 @@ public class ItemBuilder {
 
     public ItemBuilder addData(NamespacedKey key, String persistentData) {
         this.item.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, persistentData));
+        return this;
+    }
+
+    public ItemBuilder setCustomModelData(String id) {
+        this.item.editMeta(itemMeta -> {
+            CustomModelDataComponent component = itemMeta.getCustomModelDataComponent();
+            component.setStrings(Collections.singletonList(id));
+            itemMeta.setCustomModelDataComponent(component);
+        });
+        return this;
+    }
+
+    public ItemBuilder applyCustomModelData(NamespacedKey key) {
+        this.item.editMeta(itemMeta -> {
+            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+            if (container.has(key, PersistentDataType.STRING)) {
+                CustomModelDataComponent component = itemMeta.getCustomModelDataComponent();
+                component.setStrings(Collections.singletonList(container.get(key, PersistentDataType.STRING)));
+                itemMeta.setCustomModelDataComponent(component);
+            }
+        });
         return this;
     }
 
