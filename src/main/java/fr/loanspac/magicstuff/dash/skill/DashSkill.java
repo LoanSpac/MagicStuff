@@ -7,7 +7,7 @@ import org.bukkit.util.Vector;
 public class DashSkill extends Skill {
 
     public DashSkill() {
-        super("Dash Skill");
+        super("dash_skill");
     }
 
     @Override
