@@ -1,7 +1,8 @@
 package fr.loanspac.magicstuff.commands;
 
 import fr.loanspac.magicstuff.MagicStuff;
-import fr.loanspac.magicstuff.sword.MagicSword;
+import fr.loanspac.magicstuff.item.MagicItem;
+import fr.loanspac.magicstuff.type.MagicType;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,16 +22,36 @@ public class MagicCommand implements CommandExecutor {
         }
         Player player = (Player) sender;
         if (args.length < 2) return false;
-        if (!(args[0].equals("give"))) return false;
-        for (MagicSword magicSword: this.plugin.getMagicSwords()) {
-            if (magicSword.getName().equals(args[1])) {
-                player.getInventory().addItem(magicSword.getItem());
-                String itemName = magicSword.getItem().getItemMeta().getItemName();
-                if (itemName.isEmpty()) {
-                    itemName = magicSword.getItem().getType().name();
+
+        if (args[0].equals("list")) {
+            for (MagicType magicType: this.plugin.getMagicTypes()) {
+                if (magicType.getNamespacedKey().getKey().equals(args[1])) {
+                    sender.sendMessage("§aList of " + magicType.getName());
+                    for (MagicItem magicItem: magicType.getItemList()) {
+                        String itemName = magicItem.getItem().getItemMeta().getItemName();
+                        if (itemName.isEmpty()) {
+                            itemName = magicItem.getItem().getType().name();
+                        }
+                        sender.sendMessage("§5- §r§7[" + itemName + "§r§7]");
+                    }
+                    return true;
                 }
-                sender.sendMessage("§aYou obtain the Magic Sword §7[" + itemName + "§7]");
-                return true;
+            }
+        }
+
+        if (!(args[0].equals("give"))) return false;
+
+        for (MagicType magicType: this.plugin.getMagicTypes()) {
+            for (MagicItem magicItem: magicType.getItemList()) {
+                if (magicItem.getName().equals(args[1])) {
+                    player.getInventory().addItem(magicItem.getItem());
+                    String itemName = magicItem.getItem().getItemMeta().getItemName();
+                    if (itemName.isEmpty()) {
+                        itemName = magicItem.getItem().getType().name();
+                    }
+                    sender.sendMessage("§aYou obtain the " + magicType.getName() + " §7[" + itemName + "§7]");
+                    return true;
+                }
             }
         }
         return false;
