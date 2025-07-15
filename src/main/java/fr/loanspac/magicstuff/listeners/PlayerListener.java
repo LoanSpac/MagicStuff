@@ -1,16 +1,30 @@
 package fr.loanspac.magicstuff.listeners;
 
-import fr.loanspac.magicstuff.sword.SpeedSword;
-import net.kyori.adventure.text.Component;
+import fr.loanspac.magicstuff.MagicStuff;
+import fr.loanspac.magicstuff.sword.MagicSword;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
+import java.util.Objects;
+
+@RequiredArgsConstructor
 public class PlayerListener implements Listener {
+    private final MagicStuff plugin;
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(Component.text("§3Voici votre épée !"));
-        event.getPlayer().getInventory().addItem(new SpeedSword().buildItem());
+    public void onAction(PlayerInteractEvent event) {
+        if (event.getItem() == null) return;
+        PersistentDataContainer container = event.getItem().getItemMeta().getPersistentDataContainer();
+        if (container.has(this.plugin.getSwordKey(), PersistentDataType.STRING)) {
+            for (MagicSword magicSword: this.plugin.getMagicSwords()) {
+                if (event.getAction().isRightClick() && Objects.equals(event.getItem(), magicSword.getItem())) {
+                    magicSword.skill.executor(event.getPlayer());
+                }
+            }
+        }
     }
 }
