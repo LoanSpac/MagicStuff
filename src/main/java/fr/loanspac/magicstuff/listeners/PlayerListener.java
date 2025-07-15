@@ -1,7 +1,8 @@
 package fr.loanspac.magicstuff.listeners;
 
 import fr.loanspac.magicstuff.MagicStuff;
-import fr.loanspac.magicstuff.sword.MagicSword;
+import fr.loanspac.magicstuff.item.MagicItem;
+import fr.loanspac.magicstuff.type.MagicType;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,10 +20,13 @@ public class PlayerListener implements Listener {
     public void onAction(PlayerInteractEvent event) {
         if (event.getItem() == null) return;
         PersistentDataContainer container = event.getItem().getItemMeta().getPersistentDataContainer();
-        if (container.has(this.plugin.getSwordKey(), PersistentDataType.STRING)) {
-            for (MagicSword magicSword: this.plugin.getMagicSwords()) {
-                if (event.getAction().isRightClick() && Objects.equals(event.getItem(), magicSword.getItem())) {
-                    magicSword.skill.executor(event.getPlayer());
+
+        for (MagicType magicType: this.plugin.getMagicTypes()) {
+            if (container.has(magicType.getNamespacedKey(), PersistentDataType.STRING)) {
+                for (MagicItem magicItem: magicType.getItemList()) {
+                    if (event.getAction().isRightClick() && Objects.equals(event.getItem(), magicItem.getItem())) {
+                        magicItem.skill.executor(event.getPlayer());
+                    }
                 }
             }
         }

@@ -3,10 +3,10 @@ package fr.loanspac.magicstuff;
 import fr.loanspac.magicstuff.commands.MagicCommand;
 import fr.loanspac.magicstuff.example.sword.DashSword;
 import fr.loanspac.magicstuff.listeners.PlayerListener;
-import fr.loanspac.magicstuff.sword.MagicSword;
+import fr.loanspac.magicstuff.type.MagicType;
+import fr.loanspac.magicstuff.type.sword.MagicSword;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -15,8 +15,7 @@ import java.util.Objects;
 
 @Getter
 public final class MagicStuff extends JavaPlugin {
-    private final List<MagicSword> magicSwords = new ArrayList<>();
-    private final NamespacedKey swordKey = new NamespacedKey(this, "magic-sword");
+    private final List<MagicType> magicTypes = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -27,7 +26,8 @@ public final class MagicStuff extends JavaPlugin {
         // Load Stuff
         boolean example = this.getConfig().getBoolean("example-stuff");
         if (example) {
-            registerMagicSword(new DashSword(this.swordKey));
+            registerMagicType(new MagicSword(this));
+            new DashSword(this.findInstance(this.magicTypes, MagicSword.class));
         }
     }
 
@@ -36,8 +36,8 @@ public final class MagicStuff extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public void registerMagicSword(MagicSword sword) {
-        magicSwords.add(sword);
+    public void registerMagicType(MagicType magicType) {
+        this.magicTypes.add(magicType);
     }
 
     // Utils for find MagicSword
