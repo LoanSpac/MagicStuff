@@ -9,14 +9,13 @@
 name: Java CI with Maven
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+    types: [closed]
 
 jobs:
   build:
-
+    if: github.event.pull_request.merged == true || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
     steps:
@@ -30,3 +29,24 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload_release_asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./target/MagicStuff-1.0-SNAPSHOT.jar
+        asset_name: MagicStuff-1.0-SNAPSHOT.jar
+        asset_content_type: application/java-archive
