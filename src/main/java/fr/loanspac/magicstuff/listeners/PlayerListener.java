@@ -2,15 +2,17 @@ package fr.loanspac.magicstuff.listeners;
 
 import fr.loanspac.magicstuff.MagicStuff;
 import fr.loanspac.magicstuff.item.MagicItem;
-import fr.loanspac.magicstuff.type.MagicType;
+import fr.loanspac.magicstuff.skill.ActionType;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class PlayerListener implements Listener {
@@ -18,17 +20,47 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onAction(PlayerInteractEvent event) {
-        if (event.getItem() == null) return;
-        PersistentDataContainer container = event.getItem().getItemMeta().getPersistentDataContainer();
+        List<ItemStack> items = Arrays.asList(event.getItem(),
+                event.getPlayer().getInventory().getHelmet(),
+                event.getPlayer().getInventory().getChestplate(),
+                event.getPlayer().getInventory().getLeggings(),
+                event.getPlayer().getInventory().getBoots());
 
-        for (MagicType magicType: this.plugin.getMagicTypes()) {
-            if (container.has(magicType.getNamespacedKey(), PersistentDataType.STRING)) {
-                for (MagicItem magicItem: magicType.getItemList()) {
-                    if (event.getAction().isRightClick() && Objects.equals(event.getItem(), magicItem.getItem())) {
-                        magicItem.skill.executor(event.getPlayer());
+        for (ItemStack item: items) {
+            if (item == null) continue;
+            this.plugin.getMagicTypes().forEach(magicType -> {
+                PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+
+                if (container.has(magicType.getNamespacedKey(), PersistentDataType.STRING)) {
+                    for (MagicItem magicItem: magicType.getItemList()) {
+                        if (item.equals(magicItem.getItem()) && this.checkActionTypes(event, magicItem.getSkill().getActionTypes())) {
+                            magicItem.getSkill().executor(event.getPlayer());
+                        }
                     }
                 }
+            });
+        }
+    }
+
+    private boolean checkActionTypes(PlayerInteractEvent event, List<ActionType> actionTypes) {
+        for (ActionType actionType : actionTypes) {
+            switch (actionType) {
+                case RIGHT_CLICK:
+                    if (!event.getAction().isRightClick()) return false;
+                    break;
+                case LEFT_CLICK:
+                    if (!event.getAction().isLeftClick()) return false;
+                    break;
+                case SHIFT:
+                    if (!event.getPlayer().isSneaking()) return false;
+                    break;
+                case JUMP:
+                    if (!event.getPlayer().isJumping()) return false;
+                    break;
+                default:
+                    break;
             }
         }
+        return true;
     }
 }

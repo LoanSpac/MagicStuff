@@ -1,16 +1,18 @@
 package fr.loanspac.magicstuff.example.skill;
 
+import fr.loanspac.magicstuff.skill.ActionType;
 import fr.loanspac.magicstuff.skill.Skill;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.time.Duration;
+import java.util.Collections;
 
 public class DashSkill extends Skill {
 
     public DashSkill() {
-        super("dash_skill");
+        super("dash_skill", Collections.singletonList(ActionType.RIGHT_CLICK));
     }
 
     @Override
