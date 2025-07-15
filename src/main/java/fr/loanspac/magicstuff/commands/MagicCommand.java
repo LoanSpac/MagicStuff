@@ -22,6 +22,23 @@ public class MagicCommand implements CommandExecutor {
         }
         Player player = (Player) sender;
         if (args.length < 2) return false;
+
+        if (args[0].equals("list")) {
+            for (MagicType magicType: this.plugin.getMagicTypes()) {
+                if (magicType.getNamespacedKey().getKey().equals(args[1])) {
+                    sender.sendMessage("§aList of " + magicType.getName());
+                    for (MagicItem magicItem: magicType.getItemList()) {
+                        String itemName = magicItem.getItem().getItemMeta().getItemName();
+                        if (itemName.isEmpty()) {
+                            itemName = magicItem.getItem().getType().name();
+                        }
+                        sender.sendMessage("§5- §r§7[" + itemName + "§r§7]");
+                    }
+                    return true;
+                }
+            }
+        }
+
         if (!(args[0].equals("give"))) return false;
 
         for (MagicType magicType: this.plugin.getMagicTypes()) {

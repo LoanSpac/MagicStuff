@@ -7,6 +7,7 @@ description: A Minecraft plugin to create custom item easily
 commands:
   magic:
     description: "Give a Magic Sword"
-    usage: §cUsage /magic give <item>
-    aliases: [ ms ]
+    usage: "§cUsage /magic <give, list> <item, type>"
+    aliases: [ms]
     permission: magic.common
+    permission-message: "§cYou can't use this magic command, you should have [<permission>] permission"
