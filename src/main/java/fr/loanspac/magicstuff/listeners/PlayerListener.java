@@ -3,6 +3,7 @@ package fr.loanspac.magicstuff.listeners;
 import fr.loanspac.magicstuff.MagicStuff;
 import fr.loanspac.magicstuff.item.MagicItem;
 import fr.loanspac.magicstuff.skill.ActionType;
+import fr.loanspac.magicstuff.type.MagicType;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,17 +29,19 @@ public class PlayerListener implements Listener {
 
         for (ItemStack item: items) {
             if (item == null) continue;
-            this.plugin.getMagicTypes().forEach(magicType -> {
+            for (MagicType magicType: this.plugin.getMagicTypes()) {
                 PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
 
                 if (container.has(magicType.getNamespacedKey(), PersistentDataType.STRING)) {
+                    String namespacedValue = container.get(magicType.getNamespacedKey(), PersistentDataType.STRING);
+                    if (namespacedValue == null) continue;
                     for (MagicItem magicItem: magicType.getItemList()) {
-                        if (item.equals(magicItem.getItem()) && this.checkActionTypes(event, magicItem.getSkill().getActionTypes())) {
+                        if (namespacedValue.equals(magicItem.getName()) && this.checkActionTypes(event, magicItem.getSkill().getActionTypes())) {
                             magicItem.getSkill().executor(event.getPlayer());
                         }
                     }
                 }
-            });
+            }
         }
     }
 

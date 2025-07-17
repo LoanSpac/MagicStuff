@@ -9,7 +9,7 @@ import org.bukkit.Material;
 
 public class SpeedBoots extends MagicItem {
     public SpeedBoots(MagicType magicType) {
-        super("speed_boots", magicType, new ItemBuilder(Material.IRON_BOOTS)
+        super("speed-boots", magicType, new ItemBuilder(Material.IRON_BOOTS)
                 .addData(magicType.getNamespacedKey(), "speed-boots")
                 .applyCustomModelData(magicType.getNamespacedKey())
                 .name(Component.text("§bSpeed Boots"))
