@@ -8,18 +8,18 @@ import org.bukkit.inventory.ItemStack;
 @Getter
 public abstract class MagicItem {
     private final String name;
-    private final MagicType type;
+    private final MagicType magicType;
     private final ItemStack item;
     public final Skill skill;
 
-    protected MagicItem(String name, MagicType type, ItemStack item, Skill skill) {
-        if (type != null && !(type.applyRule(item))) {
-            item = type.getDefaultItem();
+    protected MagicItem(String name, MagicType magicType, ItemStack item, Skill skill) {
+        if (magicType != null && !(magicType.applyRule(item))) {
+            item = magicType.getDefaultItem();
         }
         this.name = name;
-        this.type = type;
+        this.magicType = magicType;
         this.item = item;
         this.skill = skill;
-        if (type != null) type.getItemList().add(this);
+        if (magicType != null) magicType.getItemList().add(this);
     }
 }
