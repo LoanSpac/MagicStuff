@@ -59,6 +59,12 @@ public class ItemBuilder {
         return this;
     }
 
+    @SuppressWarnings("deprecation")
+    public ItemBuilder name(String name) {
+        this.item.editMeta(itemMeta -> itemMeta.setItemName(name));
+        return this;
+    }
+
     public ItemBuilder lore(Component line) {
         this.item.editMeta(itemMeta -> itemMeta.lore(Collections.singletonList(line)));
         return this;
