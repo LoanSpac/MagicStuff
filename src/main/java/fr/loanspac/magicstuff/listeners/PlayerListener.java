@@ -36,6 +36,7 @@ public class PlayerListener implements Listener {
                     String namespacedValue = container.get(magicType.getNamespacedKey(), PersistentDataType.STRING);
                     if (namespacedValue == null) continue;
                     for (MagicItem magicItem: magicType.getItemList()) {
+                        if (magicItem.getSkill() == null) continue;
                         if (namespacedValue.equals(magicItem.getName()) && this.checkActionTypes(event, magicItem.getSkill().getActionTypes())) {
                             magicItem.getSkill().executor(event.getPlayer());
                         }
