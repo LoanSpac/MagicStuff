@@ -28,10 +28,11 @@ public final class MagicStuff extends JavaPlugin {
         Objects.requireNonNull(getCommand("magic")).setExecutor(new MagicCommand(this));
 
         // Load Stuff
+        registerMagicType(new MagicSword(this));
+        registerMagicType(new MagicArmor(this));
+
         boolean example = this.getConfig().getBoolean("example-stuff");
         if (example) {
-            registerMagicType(new MagicSword(this));
-            registerMagicType(new MagicArmor(this));
             new DashSword(this.findInstance(this.magicTypes, MagicSword.class));
             new WrongSword(this.findInstance(this.magicTypes, MagicSword.class));
             new SpeedBoots(this.findInstance(this.magicTypes, MagicArmor.class));
