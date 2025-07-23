@@ -3,17 +3,16 @@ package fr.loanspac.magicstuff.utils;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
+import org.bukkit.inventory.meta.components.EquippableComponent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -152,6 +151,27 @@ public class ItemBuilder {
                 component.setStrings(Collections.singletonList(container.get(key, PersistentDataType.STRING)));
                 itemMeta.setCustomModelDataComponent(component);
             }
+        });
+        return this;
+    }
+
+    public ItemBuilder setEquippable(NamespacedKey key, EquipmentSlot slot) {
+        this.item.editMeta(itemMeta -> {
+            EquippableComponent equippableComponent = itemMeta.getEquippable();
+            equippableComponent.setSlot(slot);
+            equippableComponent.setModel(key);
+            itemMeta.setEquippable(equippableComponent);
+        });
+        return this;
+    }
+
+    public ItemBuilder setEquippable(NamespacedKey key, EquipmentSlot slot, Sound sound) {
+        this.item.editMeta(itemMeta -> {
+            EquippableComponent equippableComponent = itemMeta.getEquippable();
+            equippableComponent.setSlot(slot);
+            equippableComponent.setModel(key);
+            equippableComponent.setEquipSound(sound);
+            itemMeta.setEquippable(equippableComponent);
         });
         return this;
     }
