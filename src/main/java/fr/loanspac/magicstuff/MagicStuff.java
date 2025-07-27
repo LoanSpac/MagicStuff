@@ -2,10 +2,13 @@ package fr.loanspac.magicstuff;
 
 import fr.loanspac.magicstuff.commands.MagicCommand;
 import fr.loanspac.magicstuff.example.armor.SpeedBoots;
+import fr.loanspac.magicstuff.example.armor.WrongArmor;
 import fr.loanspac.magicstuff.example.sword.DashSword;
+import fr.loanspac.magicstuff.example.sword.WrongSword;
 import fr.loanspac.magicstuff.listeners.PlayerListener;
 import fr.loanspac.magicstuff.type.MagicType;
 import fr.loanspac.magicstuff.type.armor.MagicArmor;
+import fr.loanspac.magicstuff.type.items.MagicGlobal;
 import fr.loanspac.magicstuff.type.sword.MagicSword;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -26,12 +29,16 @@ public final class MagicStuff extends JavaPlugin {
         Objects.requireNonNull(getCommand("magic")).setExecutor(new MagicCommand(this));
 
         // Load Stuff
+        registerMagicType(new MagicGlobal(this));
+        registerMagicType(new MagicSword(this));
+        registerMagicType(new MagicArmor(this));
+
         boolean example = this.getConfig().getBoolean("example-stuff");
         if (example) {
-            registerMagicType(new MagicSword(this));
-            registerMagicType(new MagicArmor(this));
             new DashSword(this.findInstance(this.magicTypes, MagicSword.class));
-            new SpeedBoots(this.findInstance(this.getMagicTypes(), MagicArmor.class));
+            new WrongSword(this.findInstance(this.magicTypes, MagicSword.class));
+            new SpeedBoots(this.findInstance(this.magicTypes, MagicArmor.class));
+            new WrongArmor(this.findInstance(this.magicTypes, MagicArmor.class));
         }
     }
 
